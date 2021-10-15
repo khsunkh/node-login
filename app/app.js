@@ -10,10 +10,10 @@ const home = require("./src/routes/home");
 // 앱 세팅
 app.set("views", "./src/views");
 app.set("view engine", "ejs");
-app.use(express.static(`${__dirname}/src/public`));
 
 // 미들웨어 등록 메서드
 app.use("/", home);
+app.use(express.static(`${__dirname}/src/public`));
 
 
 module.exports = app;
