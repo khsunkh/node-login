@@ -2,7 +2,7 @@
 
 const app = require("../app");
 
-const PORT = 8087;
+const PORT = 5500;
 
 // 호스팅
 app.listen(PORT, () => {
