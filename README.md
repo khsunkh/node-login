@@ -9,6 +9,7 @@ npm install {package name} --save #save info to package.json
 ### dependency packages
 express
 ejs
+body-parser # 더 이상 지원 안함 -> express에 내장되어 있음
 
 ## make package.json
 ```sh
