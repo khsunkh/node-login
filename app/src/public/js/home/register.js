@@ -10,16 +10,16 @@ const id = document.querySelector("#id"),
 registerBtn.addEventListener("click", register);
 
 function register(e) {
-    // e.preventDefault();
+    if (!id.value) return alert("아이디를 입력해주십시오.");
+    if (psword.value !== pswordConfirm.value) return alert("비밀번호가 일치하지 않습니다.");
+
     const req = {
         id: id.value,
         email: email.value,
         username: username.value,
         psword: psword.value,
-        pswordConfirm: pswordConfirm.value
+        // pswordConfirm: pswordConfirm.value
     };
-
-    console.log(req);
     
     fetch("/register", {
         method: "POST",
@@ -39,5 +39,4 @@ function register(e) {
     .catch((err) =>{
         console.error(new Error("회원가입 중 에러"));
     });
-
 }

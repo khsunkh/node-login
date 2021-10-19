@@ -10,6 +10,8 @@ const ctrl = require("./home.ctl");
 router.get("/", ctrl.view.home);
 router.get("/login", ctrl.view.login);
 router.get("/register", ctrl.view.register);
+
 router.post("/login", ctrl.process.login);
+router.post("/register", ctrl.process.register);
 
 module.exports = router;
