@@ -16,18 +16,27 @@ class UserStorage {
         return userInfo;
     };
 
-    static getUsers(...fields){        
+    static #getUsers(data, isAll, fields) {
+        const users = JSON.parse(data);
+        if (isAll) return users;
+
+        const newUsers = fields.reduce((newUsers, field) => {
+            if (users.hasOwnProperty(field)) {
+                newUsers[field] = users[field];
+            }
+            return newUsers; // reduce 내에서 반환해주어야 newUsers가 갱신됨
+        }, {}); // 빈 {}는 reduce 안의 newUsers의 초기값
+        return newUsers;
+    }
+
+    static getUsers(isAll, ...fields){        
         // const users = this.#users;
-        if (fields.length > 0) {
-            const newUsers = fields.reduce((newUsers, field) => {
-                if (users.hasOwnProperty(field)) {
-                    newUsers[field] = users[field];
-                }
-                return newUsers; // reduce 내에서 반환해주어야 newUsers가 갱신됨
-            }, {}); // 빈 {}는 reduce 안의 newUsers의 초기값
-            return newUsers;
-        };
-        return users;
+        return fs
+        .readFile("./src/databases/users.json")
+        .then((data) => {
+            return this.#getUsers(data, isAll, fields);
+        })
+        .catch((err) => console.error(err));
     };
 
     static getUserInfo(id) {
@@ -39,12 +48,22 @@ class UserStorage {
             .catch((err) => console.error(err));
     };
 
-    static save(userInfo) {
-        // const users = this.#users;
+    static async save(userInfo) {
+        const users = await this.getUsers(true);
+        if (users.id.includes(userInfo.id)){
+            return "이미 존재하는 아이디입니다.";
+        }
+        // 데이터 추가
         users.id.push(userInfo.id);
-        users.psword.push(userInfo.psword);
         users.username.push(userInfo.username);
+        users.psword.push(userInfo.psword);
+        fs.writeFile("./src/databases/users.json", JSON.stringify(users));
         return {success: true};
+        // const users = this.#users;
+        // users.id.push(userInfo.id);
+        // users.psword.push(userInfo.psword);
+        // users.username.push(userInfo.username);
+        // return {success: true};
     }
 };
 
