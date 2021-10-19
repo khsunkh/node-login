@@ -7,9 +7,9 @@ class User {
         this.body = body;
     };
 
-    login() {
+    async login() { // await는 비동기 함수에서만 동작함, 그래서 async 해준다.
         const client = this.body;
-        const {id, psword} = UserStorage.getUserInfo(client.id);
+        const {id, psword} = await UserStorage.getUserInfo(client.id); //프로미스 반환하는 녀석을 기다려라 : await
         if (id) {
             if (psword === client.psword) {
                 return {success: true};
@@ -23,15 +23,6 @@ class User {
         const client = this.body;
         const response = UserStorage.save(client);
         return response;
-        // const body = this.body;
-        // const {id, psword} = UserStorage.getUserInfo(body.id);
-        // if (id) {
-        //     if (psword === this.body.psword) {
-        //         return {success: true};
-        //     }
-        //     return {success: false, msg: "비밀번호가 틀렸습니다."};
-        // }
-        // return {success: false, msg: "존재하지 않는 아이디입니다."};
     };
 };
 
